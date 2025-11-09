@@ -1,0 +1,14 @@
+<article class="card">
+  <a href="{{ product.url }}">
+    {% if product.featured_image %}
+      <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.title | escape }}">
+    {% endif %}
+  </a>
+  <div class="pad">
+    {% if show_vendor %}<div class="muted">{{ product.vendor }}</div>{% endif %}
+    <h3 style="margin:4px 0 6px 0;font-size:1rem;line-height:1.2"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    <div class="Price">
+      {% render 'price', product: product %}
+    </div>
+  </div>
+</article>
