@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% if page_title %}{{ page_title }} — {% endif %}{{ shop.name }}</title>
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ content_for_header }}
+    <style>
+      :root { --bg:#0a0a0a; --fg:#f3f3f3; --muted:#9a9a9a; --accent:#e6e6e6; --link:#dcdcdc; }
+      html,body{background:var(--bg); color:var(--fg); font-family: ui-sans-serif,system-ui,Inter,Helvetica,Arial,sans-serif;}
+      a{color:var(--link); text-decoration:none}
+      .container{max-width:1320px;margin:0 auto;padding:0 20px}
+      /* Fixed header */
+      .Header{position:sticky;top:0;z-index:60;backdrop-filter:blur(8px);background:rgba(10,10,10,.7);border-bottom:1px solid rgba(255,255,255,.08)}
+      .Header-row{display:flex;align-items:center;justify-content:space-between;height:64px}
+      .Nav{display:flex;gap:22px;align-items:center}
+      .Nav a{letter-spacing:.04em;text-transform:uppercase;font-size:.84rem}
+      .Header-right{display:flex;gap:18px;align-items:center}
+      .Price{color:var(--fg)!important} /* ensure prices are not blue */
+      .btn{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(255,255,255,.2);padding:.6rem 1rem;border-radius:999px}
+      /* Layout spacing under sticky header */
+      main{padding-top:16px}
+      /* Cards/grid */
+      .grid{display:grid;gap:20px}
+      .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .card{border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.02)}
+      .card img{display:block;width:100%;height:auto}
+      .card .pad{padding:14px}
+      .muted{color:var(--muted);font-size:.88rem}
+      .Footer{border-top:1px solid rgba(255,255,255,.08);padding:28px 0;margin-top:48px}
+      .Footer .links{display:flex;gap:16px;flex-wrap:wrap}
+      .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+      @media (max-width:900px){ .grid.cols-3{grid-template-columns:1fr 1fr} .Header-row{height:58px} }
+      @media (max-width:600px){ .grid.cols-3{grid-template-columns:1fr} }
+    </style>
+  </head>
+  <body>
+    <header class="Header">
+      <div class="container Header-row">
+        <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+          {{ shop.name }}
+        </a>
+        <!-- Primary Nav: STORIES first, then SHOP -->
+        <nav class="Nav" role="navigation" aria-label="Primary">
+          {%- assign stories_menu = linklists['main-stories'] -%}
+          {%- assign shop_menu = linklists['main-shop'] -%}
+          {%- if stories_menu and stories_menu.links.size > 0 -%}
+            {%- for l in stories_menu.links -%}
+              <a href="{{ l.url }}">{{ l.title }}</a>
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if shop_menu and shop_menu.links.size > 0 -%}
+            {%- for l in shop_menu.links -%}
+              <a href="{{ l.url }}">{{ l.title }}</a>
+            {%- endfor -%}
+          {%- endif -%}
+        </nav>
+
+        <div class="Header-right">
+          <a class="btn" href="{{ routes.cart_url }}" aria-label="Cart">Cart</a>
+          <a class="btn" href="{{ routes.account_url }}" aria-label="Account">Account</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="MainContent" class="container" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    <footer class="Footer">
+      <div class="container">
+        <div class="links">
+          <!-- Keep only essentials; no 'Company/About/Careers/Press/Wholesale' -->
+          <a href="{{ routes.contact_url }}">Contact</a>
+          <a href="{{ routes.policy_privacy_url }}">Privacy</a>
+          <a href="{{ routes.policy_refund_url }}">Returns</a>
+          <a href="{{ routes.policy_shipping_url }}">Shipping</a>
+        </div>
+        <p class="muted" style="margin-top:10px;">© {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+      </div>
+    </footer>
+
+    {{ 'theme.js' | asset_url | script_tag }}
+  </body>
+</html>
