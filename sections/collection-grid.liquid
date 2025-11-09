@@ -1,0 +1,25 @@
+{% schema %}
+{
+  "name": "Collection grid",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "default": 3, "label": "Columns" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
+    { "type": "range", "id": "max_products", "min": 3, "max": 24, "step": 1, "default": 9, "label": "Max products" }
+  ],
+  "presets": [{ "name": "Collection grid" }]
+}
+{% endschema %}
+
+{% assign coll = collections[section.settings.collection] %}
+{% if coll %}
+  <section>
+    <div class="grid cols-3" style="grid-template-columns:repeat({{ section.settings.columns }},minmax(0,1fr))">
+      {% for prod in coll.products limit: section.settings.max_products %}
+        {% render 'product-card', product: prod, show_vendor: section.settings.show_vendor %}
+      {% endfor %}
+    </div>
+  </section>
+{% else %}
+  <p class="muted">Select a collection in the section settings.</p>
+{% endif %}
