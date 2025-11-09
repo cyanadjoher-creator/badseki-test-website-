@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "hero": { "type": "hero-video", "settings": { "mp4": "", "poster": "", "heading": "BADSEKI", "subheading": "Automotive // Apparel", "cta_label": "Shop", "cta_url": "/collections/all" } },
+    "featured": { "type": "collection-grid", "settings": { "collection": "frontpage", "columns": 3, "show_vendor": false, "max_products": 9 } },
+    "rich": { "type": "rich-text", "settings": { "heading": "Stories", "text": "Drop diaries, builds, community. No fluff — just the road.", "cta_label": "Read stories", "cta_url": "/blogs/stories" } }
+  },
+  "order": ["hero", "featured", "rich"]
+}
